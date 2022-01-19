@@ -18,6 +18,7 @@ namespace DatabaseBackupService
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddLogging();
                     services.AddHostedService<Worker>();
                 });
     }
