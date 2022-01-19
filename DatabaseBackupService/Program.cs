@@ -21,7 +21,7 @@ namespace DatabaseBackupService
                 .Enrich.FromLogContext()
                 .WriteTo.File(new CompactJsonFormatter(), @"D:\Services\BackupService\logs\logs.json")
                 .CreateLogger();
-
+            
             try
             {
                 Log.Information("Starting web host");
@@ -44,15 +44,19 @@ namespace DatabaseBackupService
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                
                 .UseSerilog((context, services, configuration) => configuration
                     .ReadFrom.Configuration(context.Configuration)
                     .ReadFrom.Services(services)
                     .Enrich.FromLogContext()
                     .WriteTo.File(@"D:\Services\BackupService\logs\logs.txt"))
+                .UseWindowsService()
                 .ConfigureServices((hostContext, services) =>
                 {
+                    
                     services.AddLogging();
                     services.AddHostedService<Worker>();
+                    
                 });
     }
 }
